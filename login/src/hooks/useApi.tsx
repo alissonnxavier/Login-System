@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'http://google.com.br'
+    baseURL: 'http://localhost:8080'
 });
 
 export const useApi = () => ({
@@ -10,7 +10,7 @@ export const useApi = () => ({
         return response.data;
     },
     signin: async (email: string, password: string) => {
-        const response = await api.post('/signin', { email, password });
+        const response = await api.post('/', { email, password });
         return response.data;
     },
     logout: async () => {

@@ -1,47 +1,61 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button';
 import { AuthContext } from '../contexts/Auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useApi } from '../hooks/useApi';
 
 const Login = () => {
 
     const auth = useContext(AuthContext);
+    const api = useApi();
 
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        auth.user = {
+    const handleLogin = async () => {
+
+        //const isLogged = await signin(email, password);
+        const data = api.signin(email, password);
+        data.then((response) => {
+            auth.user = {
+                id: response.user.id,
+                name: response.user.name,
+                email: response.user.email,
+                password: response.user.password,
+            }
+            navigate('/private');
+        })
+        console.log(auth.user)
+        /* auth.user = {
             id: 'kkk',
             name: 'slkjdfljk',
             email: 'slkdfkj',
             password: 'slkjdfljk',
-        }
-
-        navigate('/private');
+        } */
+  
     };
 
     const handleRequest = async () => {
 
-        const msg = 'OI OI'
+        /*         const msg = 'OI OI'
+        
+                const response = await fetch('http://localhost:8080/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    })
+                }).then((response) => { console.log(response) });
+         */
 
-        const response = await fetch('http://localhost:8080/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            })
-        }).then((response) => { console.log(response) });
-
-
-
+        auth.user = null;
 
     }
 
